@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.Kstore.dao.OrdersMapper">
+
+	<!--author: minhe 
+	    fields: orders
+	    describe: 
+	-->
+
+	<!-- 根据用户信息，获得购物车内容 -->
+	<select id="getOrderById" parameterType="int" resultType="com.chinasofti.Kstore.vo.Orders">
+		select * from orders where order_id = #{order_id}
+	</select>
+	
+	<insert id="addOrder" parameterType="orders" >
+		insert into orders(seller_id,buyer_id,goods_id,buy_time,state) values(#{seller_id},#{buyer_id},#{goods_id},#{buy_time},#{state})
+	</insert>
+	
+	<select id="getOrderByUserId" parameterType="int" resultType="orders">
+		select * from orders where buyer_id = #{user_id} order by state desc,buy_time desc
+	</select>
+	
+	<update id="confirmById" parameterType="int">
+		update orders set state="已完成" where order_id = #{order_id}
+	</update>
+
+</mapper>

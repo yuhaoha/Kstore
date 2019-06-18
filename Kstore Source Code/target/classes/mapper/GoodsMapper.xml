@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.Kstore.dao.GoodsMapper">
+
+<insert id="Post" parameterType="goods" >
+insert into goods (name,type,pictures,owner_id,release_time,description,price) values(#{name},#{type},#{pictures},#{owner_id},#{release_time},#{description},#{price})
+</insert>
+
+<select id="MyPost" resultType="goods" parameterType="int">
+select * from goods where owner_id=#{owner_id} order by state,release_time desc
+</select>
+
+<select id="GetGoodsById" resultType="goods" parameterType="int">
+select * from goods where goods_id=#{good_id}
+</select>
+
+<select id="GetCategory" resultType="goods" parameterType="string">
+select * from goods where type=#{type} order by state
+</select>
+
+<select id="GetCategoryOnlySix" resultType="goods" parameterType="string">
+select * from goods where type=#{type} and state=false order by rand() limit 6
+</select>
+
+<select id="GetCategoryByReleaseTime" resultType="goods" parameterType="string">
+select * from goods where type=#{type} order by state,release_time desc
+</select>
+
+<select id="GetCategoryByPrice_1" resultType="goods" parameterType="string">
+select * from goods where type=#{type} order by state,price
+</select>
+
+<select id="GetCategoryByPrice_2" resultType="goods" parameterType="string">
+select * from goods where type=#{type} order by state,price desc
+</select>
+
+<select id="GetTotalGoods" resultType="goods">
+select * from goods order by state
+</select>
+
+<select id="GetTotalGoodsByReleaseTime" resultType="goods">
+select * from goods order by state,release_time desc
+</select>
+
+<select id="GetTotalGoodsByPrice_1" resultType="goods">
+select * from goods order by state,price
+</select>
+
+<select id="GetTotalGoodsByPrice_2" resultType="goods">
+select * from goods order by state,price desc
+</select>
+
+<!-- author:minhe  page:购物车 -->
+	<select id="getGoodsByGoodsId" parameterType="int" resultType="goods">
+		select * from goods where goods_id=#{goods_id}
+	</select>
+	<!-- END author:minhe  page:购物车 -->
+
+<select id="SearchGoods" resultType="goods" parameterType="string">
+select * from goods where goods_id in
+    (select goods_id from goods where type REGEXP #{search})
+    union
+select * from goods where name REGEXP #{search} order by state
+</select>
+
+<select id="SearchGoodsByReleaseTime" resultType="goods" parameterType="string">
+select * from goods where goods_id in
+    (select goods_id from goods where type REGEXP #{search})
+    union
+select * from goods where name REGEXP #{search} order by state,release_time
+</select>
+
+<select id="SearchGoodsByPrice_1" resultType="goods" parameterType="string">
+select * from goods where goods_id in
+    (select goods_id from goods where type REGEXP #{search})
+    union
+select * from goods where name REGEXP #{search} order by state,price
+</select>
+
+<select id="SearchGoodsByPrice_2" resultType="goods" parameterType="string">
+select * from goods where goods_id in
+    (select goods_id from goods where type REGEXP #{search})
+    union
+select * from goods where name REGEXP #{search} order by state,price desc
+</select>
+
+<update id="changeGoodsState" parameterType="int">
+ update goods set state=1 where goods_id = #{goods_id}
+</update>
+
+</mapper>

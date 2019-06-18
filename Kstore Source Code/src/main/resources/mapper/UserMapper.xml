@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinasofti.Kstore.dao.UserMapper">
+
+<select id="Login" resultType="user" parameterType="user">
+select * from user where name=#{name} and password=#{password}
+</select>
+
+<insert id="Register" parameterType="user" useGeneratedKeys="true">
+insert into user (name,email,password) values(#{name},#{email},#{password})
+</insert>
+
+<select id="CheckUser" resultType="user" parameterType="user">
+select * from user where name=#{name}
+</select>
+
+<update id="ChangePwd" parameterType="user" >
+update user set password=#{password} where user_id = #{user_id}
+</update>
+
+<update id="ChangeProfile" parameterType="user" >
+update user 
+<set>
+<if test="birthday!=null">birthday=#{birthday},</if>
+<if test="profile_photo!=null">profile_photo=#{profile_photo},</if>
+<if test="gender!=null">gender=#{gender},</if>
+<if test="email!=null">email=#{email},</if>
+<if test="phone_num!=null">phone_num=#{phone_num},</if>
+<if test="province!=null">province=#{province},</if>
+<if test="city!=null">city=#{city},</if>
+<if test="district!=null">district=#{district},</if>
+<if test="street!=null">street=#{street}</if>
+</set>
+where user_id = #{user_id}
+</update>
+
+<select id="SelById" resultType="user" parameterType="int">
+select * from user where user_id=#{user_id}
+</select>
+
+<update id="AddFaithValueById" parameterType="int">
+	update user set faith_value = faith_value + 5 where user_id = #{user_id}
+</update>
+</mapper>
